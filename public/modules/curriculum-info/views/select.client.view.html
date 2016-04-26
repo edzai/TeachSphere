@@ -1,7 +1,7 @@
 <body>
   <form ng-submit="formSubmit()" ng-init="getGrades()">
     <label>Grade: </label>
-    <select name="grade" ng-model="grade">
+    <select name="grade" ng-model="grade" ng-change="gradeSelected()">
       <option ng-repeat="grade in grades" value="{{ grade }}">{{ grade }}</option>
     </select>
     <label>Subject: </label>

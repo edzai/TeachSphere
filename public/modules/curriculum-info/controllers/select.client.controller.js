@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('curriculum-info').controller('SelectController', ['$scope', 'CurriculumService', 'GradesService',
-	function($scope, CurriculumService, GradesService) {
+angular.module('curriculum-info').controller('SelectController', ['$scope', 'CurriculumService', 'GradesService', 'SubjectsService',
+	function($scope, CurriculumService, GradesService, SubjectsService) {
 
 		// TODO: retrieves and renders data using grade & subject
 		$scope.formSubmit = function() {
@@ -22,5 +22,14 @@ angular.module('curriculum-info').controller('SelectController', ['$scope', 'Cur
 				$scope.grades = data;
 			});
 		};
+
+		$scope.gradeSelected = function() {
+			SubjectsService
+			.query({ grade: $scope.grade })
+			.$promise
+			.then(function(data) {
+				$scope.subjects = data;
+			});
+		}
 	}
 ]);
