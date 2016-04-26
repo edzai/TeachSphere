@@ -11,3 +11,9 @@ angular.module('curriculum-info').factory('GradesService', ['$resource',
 		return $resource('/grades');
 	}
 ]);
+
+angular.module('curriculum-info').factory('SubjectsService', ['$resource',
+	function($resource) {
+		return $resource('/subjects');
+	}
+]);

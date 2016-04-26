@@ -19,7 +19,7 @@ exports.getCurriculumInfo = function(req, res) {
     key: ASN_API_KEY,
     size: 200,
     'return-fields': 'description,education_level'
-  }
+  };
 
   // build bq query param and url
   var bq = BQ_PREFIX + "+education_level:'" + req.query.grade + "'+subject:'" + req.query.subject + "')&";
@@ -39,7 +39,7 @@ exports.getGrades = function(req, res) {
     key: ASN_API_KEY,
     size: 0,  // specify as zero since only need education levels
     facet: 'fct_education_level'
-  }
+  };
 
   // build bq query param and url
   var bq = BQ_PREFIX + ')&';
@@ -54,6 +54,32 @@ exports.getGrades = function(req, res) {
         grades.push(constraints[i].value);
       }
       res.send(grades);
+    }
+  });
+};
+
+exports.getSubjects = function(req, res) {
+  // subjects retrieval data
+  var data = {
+    key: ASN_API_KEY,
+    size: 0,  // specify as zero since only need subjects
+    facet: 'fct_subject'
+  };
+
+  // build bq query param and url
+  var bq = BQ_PREFIX + "+education_level:'" + req.query.grade + "')&";
+  var url = CURRICULUM_INFO_ENDPOINT + bq + querystring.stringify(data);
+
+  // retrieve list of subjects
+  request(url, function (error, response, body) {
+    if (! error && response.statusCode === 200) {
+      var constraints = JSON.parse(body)['facets']['fct_subject']['constraints'];
+      var len = constraints.length;
+      var subjects = new Array(len);
+      for (var i = 0; i < len; i++) {
+        subjects[i] = constraints[i].value;
+      }
+      res.send(subjects);
     }
   });
 };
