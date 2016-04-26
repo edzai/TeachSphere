@@ -1,0 +1,13 @@
+<body>
+  <form ng-submit="formSubmit()" ng-init="getGrades()">
+    <label>Grade: </label>
+    <select name="grade" ng-model="grade">
+      <option ng-repeat="grade in grades" value="{{ grade }}">{{ grade }}</option>
+    </select>
+    <label>Subject: </label>
+    <select name="subject" ng-model="subject">
+      <option ng-repeat="subject in subjects" value="{{ subject }}">{{ subject }}</option>
+    </select>
+    <input type="submit" value="submit"/>
+  </form>
+</body>
