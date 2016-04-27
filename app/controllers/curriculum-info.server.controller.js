@@ -13,11 +13,11 @@ var CURRICULUM_INFO_ENDPOINT = 'https://elastic1.asn.desire2learn.com/api/1/sear
 var ASN_API_KEY = null;
 var BQ_PREFIX = "?bq=(and+jurisdiction:'Ontario'+publication_status:'Published'+has_child:'false'";
 
-exports.getCurriculumInfo = function(req, res) {
+exports.getCurriculumData = function(req, res) {
   // curriculum info retrieval data
   var data = {
     key: ASN_API_KEY,
-    size: 200,
+    size: 1000,
     'return-fields': 'description,education_level'
   };
 
@@ -28,7 +28,17 @@ exports.getCurriculumInfo = function(req, res) {
   // retrieve curriculum info for grade and subject
   request(url, function (error, response, body) {
     if (! error && response.statusCode === 200) {
-      res.json(JSON.parse(body));
+      var currRawData = JSON.parse(body).hits.hit;
+      var currList = [];
+      for(var i = 0; i < currRawData.length; i++) {
+        var data = currRawData[i].data;
+
+        // only use descriptions specific to one grade
+        if(data.education_level.length === 1) {
+          currList.push(data.description);
+        }
+      }
+      res.send(currList);
     }
   });
 };
@@ -48,7 +58,7 @@ exports.getGrades = function(req, res) {
   // retrieve list of education levels
   request(url, function (error, response, body) {
     if (! error && response.statusCode === 200) {
-      var constraints = JSON.parse(body)['facets']['fct_education_level']['constraints'];
+      var constraints = JSON.parse(body).facets.fct_education_level.constraints;
       var grades = [];
       for (var i = constraints.length - 1; i >= 0; i--) {
         grades.push(constraints[i].value);
@@ -73,7 +83,7 @@ exports.getSubjects = function(req, res) {
   // retrieve list of subjects
   request(url, function (error, response, body) {
     if (! error && response.statusCode === 200) {
-      var constraints = JSON.parse(body)['facets']['fct_subject']['constraints'];
+      var constraints = JSON.parse(body).facets.fct_subject.constraints;
       var len = constraints.length;
       var subjects = new Array(len);
       for (var i = 0; i < len; i++) {

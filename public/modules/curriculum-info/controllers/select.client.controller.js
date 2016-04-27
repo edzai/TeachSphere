@@ -3,10 +3,10 @@
 angular.module('curriculum-info').controller('SelectController', ['$scope', 'CurriculumService', 'GradesService', 'SubjectsService',
 	function($scope, CurriculumService, GradesService, SubjectsService) {
 
-		// TODO: retrieves and renders data using grade & subject
+		// retrieves and renders data using grade & subject
 		$scope.formSubmit = function() {
 			CurriculumService
-			.get({ grade: $scope.grade, subject: $scope.subject })
+			.query({ grade: $scope.grade, subject: $scope.subject })
 			.$promise
 			.then(function(data) {
 				console.log(JSON.stringify(data));
@@ -23,6 +23,7 @@ angular.module('curriculum-info').controller('SelectController', ['$scope', 'Cur
 			});
 		};
 
+		// retrieves subjects for selected grade
 		$scope.gradeSelected = function() {
 			SubjectsService
 			.query({ grade: $scope.grade })
@@ -30,6 +31,6 @@ angular.module('curriculum-info').controller('SelectController', ['$scope', 'Cur
 			.then(function(data) {
 				$scope.subjects = data;
 			});
-		}
+		};
 	}
 ]);
