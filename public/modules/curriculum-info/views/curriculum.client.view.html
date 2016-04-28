@@ -1,12 +1,12 @@
 <body>
-	<div ng-repeat="(title, description) in curriculumData">
+	<div ng-repeat="(title, data) in curriculumData">
 		<h3>{{ title }}</h3>
-		<ul ng-repeat="d in description">
-			<li ng-mouseenter="showElementData(title)"
+		<ul ng-repeat="d in data">
+			<li ng-mouseenter="showElementData(title, d.rating)"
 					popover-placement="top-left"
 					popover-trigger="mouseenter"
 					uib-popover-html="popoverHtml">
-					{{ d }}
+					{{ d.description }}
 			</li>
 		</ul>
 	</div>

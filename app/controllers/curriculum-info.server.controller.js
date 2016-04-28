@@ -46,8 +46,12 @@ exports.getCurriculumData = function(req, res) {
           description.forEach(function(element) {
 
             // only include unique descriptions for subject
-            if(currRefinedData[title].indexOf(element) === -1) {
-              currRefinedData[title].push(element);
+            var existingElements = currRefinedData[title].filter(function(e) {
+              return e.description === element;
+            });
+            if(! existingElements.length) {
+              // TODO: get rating
+              currRefinedData[title].push({ description: element, rating: 50 });
             }
           });
         }
