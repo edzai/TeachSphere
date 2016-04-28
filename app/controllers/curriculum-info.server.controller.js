@@ -11,13 +11,14 @@ var mongoose = require('mongoose'),
 /* constants */
 var CURRICULUM_INFO_ENDPOINT = 'https://elastic1.asn.desire2learn.com/api/1/search';
 var ASN_API_KEY = null;
-var BQ_PREFIX = "?bq=(and+jurisdiction:'Ontario'+publication_status:'Published'+has_child:'false'";
+var BQ_PREFIX = "?bq=(and+jurisdiction:'Ontario'+publication_status:'Published'+has_child:'false'+type:'Statement'";
 
 exports.getCurriculumData = function(req, res) {
   // curriculum info retrieval data
   var data = {
     key: ASN_API_KEY,
     size: 1000,
+    rank: 'description',
     'return-fields': 'description,education_level'
   };
 
@@ -60,7 +61,7 @@ exports.getGrades = function(req, res) {
     if (! error && response.statusCode === 200) {
       var constraints = JSON.parse(body).facets.fct_education_level.constraints;
       var grades = [];
-      for (var i = constraints.length - 1; i >= 0; i--) {
+      for (var i = 0; i < constraints.length; i++) {
         grades.push(constraints[i].value);
       }
       res.send(grades);
@@ -73,7 +74,8 @@ exports.getSubjects = function(req, res) {
   var data = {
     key: ASN_API_KEY,
     size: 0,  // specify as zero since only need subjects
-    facet: 'fct_subject'
+    facet: 'fct_subject',
+    'facet-fct_subject-sort': 'alpha'
   };
 
   // build bq query param and url
