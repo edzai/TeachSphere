@@ -1,5 +1,13 @@
-<section>
-	<ul>
-		<li ng-repeat="c in curriculumData">{{ c['0'] }}</li>
-	</ul>
-</section>
+<body>
+	<div ng-repeat="(title, description) in curriculumData">
+		<h3>{{ title }}</h3>
+		<ul ng-repeat="d in description">
+			<li ng-mouseenter="showElementData(title)"
+					popover-placement="top-left"
+					popover-trigger="mouseenter"
+					uib-popover-html="popoverHtml">
+					{{ d }}
+			</li>
+		</ul>
+	</div>
+</body>

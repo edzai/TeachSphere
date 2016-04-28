@@ -44,7 +44,11 @@ exports.getCurriculumData = function(req, res) {
         // only use descriptions specific to one grade
         if(data.education_level.length === 1) {
           description.forEach(function(element) {
-            currRefinedData[title].push(element);
+
+            // only include unique descriptions for subject
+            if(currRefinedData[title].indexOf(element) === -1) {
+              currRefinedData[title].push(element);
+            }
           });
         }
       });
@@ -55,7 +59,6 @@ exports.getCurriculumData = function(req, res) {
           delete currRefinedData[key];
         }
       }
-
       res.send(currRefinedData);
     }
   });
