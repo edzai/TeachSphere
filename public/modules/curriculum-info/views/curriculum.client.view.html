@@ -2,7 +2,7 @@
 	<div ng-repeat="(title, data) in curriculumData">
 		<h3>{{ title }}</h3>
 		<ul ng-repeat="d in data">
-			<li ng-mouseenter="showElementData(title, d.rating)"
+			<li class="curriculum-bullet" ng-mouseenter="showElementData(title, d.rating)"
 					popover-placement="top-left"
 					popover-trigger="mouseenter"
 					uib-popover-html="popoverHtml">
