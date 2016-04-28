@@ -1,8 +1,11 @@
 <body>
+  <a ng-repeat="(title, data) in curriculumData" ng-click="navigateTo(title)">
+		{{ title }}><br>
+	</a>
 	<div ng-repeat="(title, data) in curriculumData">
-		<h3>{{ title }}</h3>
+		<h3 id="{{ title }}">{{ title }}</h3>
 		<ul ng-repeat="d in data">
-			<li ng-mouseenter="showElementData(title, d.rating)"
+			<li class="curriculum-bullet" ng-mouseenter="showElementData(title, d.rating)"
 					popover-placement="top-left"
 					popover-trigger="mouseenter"
 					uib-popover-html="popoverHtml">

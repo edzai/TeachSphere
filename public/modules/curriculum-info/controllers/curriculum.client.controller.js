@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('curriculum-info').controller('CurriculumController', ['$scope', '$location', '$sce', 'CurriculumService',
-	function($scope, $location, $sce, CurriculumService) {
+angular.module('curriculum-info').controller('CurriculumController', ['$scope', '$location', '$sce', '$anchorScroll', 'CurriculumService',
+	function($scope, $location, $sce, $anchorScroll, CurriculumService) {
 		var queryParams = $location.search(),
 				grade = queryParams.grade,
 				subject = queryParams.subject;
@@ -12,6 +12,8 @@ angular.module('curriculum-info').controller('CurriculumController', ['$scope', 
 		// displays popover for element mouse is currently in
 		$scope.showElementData = function(title, rating) {
 			var sectionHtml = '<b id="section">Section: </b>' +	title + '<br>';
+
+			// build HTML for easiness bar
 			var easinessBarHtml = '<div id="easiness-bar-container" class="container-fluid"> \
 															<div class="row"> \
 																<b id="easiness-bar-label" class="col-sm-1">Easy: </b> \
@@ -25,5 +27,11 @@ angular.module('curriculum-info').controller('CurriculumController', ['$scope', 
 			var popoverHtml = gradeAndSubjectHtml + sectionHtml + easinessBarHtml;
 			$scope.popoverHtml = $sce.trustAsHtml(popoverHtml);
 		}
+
+		// navigates to appropriate header based on user click
+		$scope.navigateTo = function(id) {
+			$location.hash(id);
+			$anchorScroll();
+		};
 	}
 ]);
