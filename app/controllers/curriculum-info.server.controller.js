@@ -31,8 +31,8 @@ exports.getCurriculumData = function(req, res) {
     if (! error && response.statusCode === 200) {
       var currRawData = JSON.parse(body).hits.hit,
           currRefinedData = {};
-      for(var i = 0; i < currRawData.length; i++) {
-        var data = currRawData[i].data,
+      currRawData.forEach(function(element) {
+        var data = element.data,
             description = data.description.slice(1),
             title = data.description[0];
 
@@ -43,11 +43,11 @@ exports.getCurriculumData = function(req, res) {
 
         // only use descriptions specific to one grade
         if(data.education_level.length === 1) {
-          for(var j = 0; j < description.length; j++) {
-            currRefinedData[title].push(description[j]);
-          }
+          description.forEach(function(element) {
+            currRefinedData[title].push(element);
+          });
         }
-      }
+      });
 
       // remove all curriculum topics which have no description
       for(var key in currRefinedData) {
@@ -78,9 +78,9 @@ exports.getGrades = function(req, res) {
     if (! error && response.statusCode === 200) {
       var constraints = JSON.parse(body).facets.fct_education_level.constraints,
           grades = [];
-      for (var i = 0; i < constraints.length; i++) {
-        grades.push(constraints[i].value);
-      }
+      constraints.forEach(function(element) {
+        grades.push(element.value);
+      });
       res.send(grades);
     }
   });
@@ -103,11 +103,10 @@ exports.getSubjects = function(req, res) {
   request(url, function (error, response, body) {
     if (! error && response.statusCode === 200) {
       var constraints = JSON.parse(body).facets.fct_subject.constraints,
-          len = constraints.length,
-          subjects = new Array(len);
-      for (var i = 0; i < len; i++) {
-        subjects[i] = constraints[i].value;
-      }
+          subjects = [];
+      constraints.forEach(function(element) {
+        subjects.push(element.value);
+      });
       res.send(subjects);
     }
   });
