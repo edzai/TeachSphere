@@ -30,16 +30,33 @@ exports.getCurriculumData = function(req, res) {
   request(url, function (error, response, body) {
     if (! error && response.statusCode === 200) {
       var currRawData = JSON.parse(body).hits.hit,
-          currList = [];
+          currRefinedData = {};
       for(var i = 0; i < currRawData.length; i++) {
-        var data = currRawData[i].data;
+        var data = currRawData[i].data,
+            description = data.description.slice(1),
+            title = data.description[0];
+
+        // create key-value for subject title if DNE
+        if(! currRefinedData[title]) {
+          currRefinedData[title] = [];
+        }
 
         // only use descriptions specific to one grade
         if(data.education_level.length === 1) {
-          currList.push(data.description);
+          for(var j = 0; j < description.length; j++) {
+            currRefinedData[title].push(description[j]);
+          }
         }
       }
-      res.send(currList);
+
+      // remove all curriculum topics which have no description
+      for(var key in currRefinedData) {
+        if(! currRefinedData[key].length) {
+          delete currRefinedData[key];
+        }
+      }
+
+      res.send(currRefinedData);
     }
   });
 };
