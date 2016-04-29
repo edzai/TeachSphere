@@ -1,0 +1,9 @@
+.curriculum-bullet:hover {
+  font-weight: bold;
+  text-decoration: none;
+  color: black;
+}
+
+.curriculum-bullet {
+  color: black;
+}

@@ -1,13 +1,15 @@
 <body>
-  <form ng-submit="formSubmit()" ng-init="getGrades()">
+  <form ng-submit="formSubmit()" ng-init="getGrades()" class="form-group">
     <label>Grade: </label>
-    <select name="grade" ng-model="grade" ng-change="gradeSelected()">
+    <select name="grade" ng-model="grade" ng-change="gradeSelected()" class="form-control">
       <option ng-repeat="grade in grades" value="{{ grade }}">{{ grade }}</option>
     </select>
+    <br>
     <label>Subject: </label>
-    <select name="subject" ng-model="subject">
+    <select name="subject" ng-model="subject" class="form-control">
       <option ng-repeat="subject in subjects" value="{{ subject }}">{{ subject }}</option>
     </select>
-    <input type="submit" value="submit"/>
+    <br>
+    <input type="submit" class="btn btn-info pull-right" value="Submit"/>
   </form>
 </body>
