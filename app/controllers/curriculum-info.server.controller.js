@@ -6,14 +6,36 @@
 var mongoose = require('mongoose'),
     _ = require('lodash'),
     querystring = require('querystring'),
-    request = require('request');
+    request = require('request'),
+    hash = require('object-hash'),
+    mongodb = require('mongodb').MongoClient;
 
 /* constants */
 var CURRICULUM_INFO_ENDPOINT = 'https://elastic1.asn.desire2learn.com/api/1/search',
     ASN_API_KEY = null,
     BQ_PREFIX = "?bq=(and+jurisdiction:'Ontario'+publication_status:'Published'+has_child:'false'+type:'Statement'";
 
+mongodb.connect('mongodb://localhost:27017/thinkdataapp-dev', { strict: true }, function(err, db) {
+	if(! err) {
+		console.log('Successfully connected to thinkdataapp-dev DB');
+		db.collection('asn_api', function(err, col) {
+			if(! err) {
+				col.find({ name: 'asn_api_key' }).limit(1).toArray(
+					function(err, items) { ASN_API_KEY = items[0].key; }
+				);
+			} else {
+				console.error('Can\'t access ASN API key');
+			}
+		});
+	} else {
+		console.error('Could not connect thinkdataapp-dev DB');
+	}
+});
+
 exports.getCurriculumData = function(req, res) {
+  var grade = req.query.grade,
+      subject = req.query.subject;
+
   // curriculum info retrieval data
   var data = {
     key: ASN_API_KEY,
@@ -23,7 +45,7 @@ exports.getCurriculumData = function(req, res) {
   };
 
   // build bq query param and url
-  var bq = BQ_PREFIX + "+education_level:'" + req.query.grade + "'+subject:'" + req.query.subject + "')&",
+  var bq = BQ_PREFIX + "+education_level:'" + grade + "'+subject:'" + subject + "')&",
       url = CURRICULUM_INFO_ENDPOINT + bq + querystring.stringify(data);
 
   // retrieve curriculum info for grade and subject
@@ -51,7 +73,8 @@ exports.getCurriculumData = function(req, res) {
             });
             if(! existingElements.length) {
               // TODO: get rating
-              currRefinedData[title].push({ description: element, rating: 50 });
+              var id = hash({ grade: grade, subject: subject, title: title, description: description });
+              currRefinedData[title].push({ description: element, rating: 50, id: id });
             }
           });
         }

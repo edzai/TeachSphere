@@ -26,12 +26,16 @@ angular.module('curriculum-info').controller('CurriculumController', ['$scope', 
 														</div>';
 			var popoverHtml = gradeAndSubjectHtml + sectionHtml + easinessBarHtml;
 			$scope.popoverHtml = $sce.trustAsHtml(popoverHtml);
-		}
+		};
 
 		// navigates to appropriate header based on user click
 		$scope.navigateTo = function(id) {
 			$location.hash(id);
 			$anchorScroll();
 		};
+
+		$scope.viewMore = function(id) {
+			$location.path('/curriculum/data').search({ id: id });
+		}
 	}
 ]);
