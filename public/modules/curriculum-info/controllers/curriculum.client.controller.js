@@ -36,6 +36,6 @@ angular.module('curriculum-info').controller('CurriculumController', ['$scope', 
 
 		$scope.viewMore = function(id) {
 			$location.path('/curriculum/data').search({ id: id });
-		}
+		};
 	}
 ]);

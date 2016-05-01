@@ -17,3 +17,9 @@ angular.module('curriculum-info').factory('SubjectsService', ['$resource',
 		return $resource('/subjects');
 	}
 ]);
+
+angular.module('curriculum-info').factory('CurriculumTopicService', ['$resource',
+	function($resource) {
+		return $resource('/curriculum/topic');
+	}
+]);

@@ -6,6 +6,7 @@ angular.module('curriculum-info').config(['$stateProvider',
 		$stateProvider.
 		state('curriculum-data', {
 			url: '/curriculum/data',
+			controller: 'CurriculumDataController',
 			templateUrl: 'modules/curriculum-info/views/curriculum-data.client.view.html'
 		}).
 		state('curriculum', {

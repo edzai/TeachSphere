@@ -8,7 +8,9 @@ var mongoose = require('mongoose'),
     querystring = require('querystring'),
     request = require('request'),
     hash = require('object-hash'),
-    mongodb = require('mongodb').MongoClient;
+    mongodb = require('mongodb').MongoClient,
+    errorHandler = require('./errors.server.controller'),
+    CurriculumTopic = mongoose.model('CurriculumTopic');
 
 /* constants */
 var CURRICULUM_INFO_ENDPOINT = 'https://elastic1.asn.desire2learn.com/api/1/search',
@@ -65,16 +67,30 @@ exports.getCurriculumData = function(req, res) {
 
         // only use descriptions specific to one grade
         if(data.education_level.length === 1) {
-          description.forEach(function(element) {
+          description.forEach(function(desc) {
 
             // only include unique descriptions for subject
             var existingElements = currRefinedData[title].filter(function(e) {
-              return e.description === element;
+              return e.description === desc;
             });
             if(! existingElements.length) {
-              // TODO: get rating
-              var id = hash({ grade: grade, subject: subject, title: title, description: description });
-              currRefinedData[title].push({ description: element, rating: 50, id: id });
+              var id = hash({ grade: grade, subject: subject, title: title, description: desc });
+              CurriculumTopic.findOne({ id: id }, 'description difficulty', function(err, cTopic) {
+                if(err) {
+                  console.error('Problem with finding curriculum topic data: ' + errorHandler.getErrorMessage(err));
+                } else if(! cTopic) {
+                  var newCurriTopic = new CurriculumTopic({ id: id, grade: grade, subject: subject, title: title, description: desc });
+                  newCurriTopic.save(function(err) {
+                    if(err) {
+                      console.error('Error with saving curriculum topic data: ' + errorHandler.getErrorMessage(err));
+                    } else {
+                      currRefinedData[title].push({ description: desc, rating: 0, id: id });
+                    }
+                  });
+                } else {
+                  currRefinedData[title].push({ description: desc, rating: cTopic.difficulty, id: id });
+                }
+              });
             }
           });
         }
@@ -138,6 +154,34 @@ exports.getSubjects = function(req, res) {
         subjects.push(element.value);
       });
       res.send(subjects);
+    }
+  });
+};
+
+exports.getCurriculumTopicData = function(req, res) {
+  var id = req.query.id;
+
+  // must specify id parameter for curriculum topic
+  if(! id) {
+    res.status(400).send({
+       message: 'Missing \'id\' parameter'
+    });
+  }
+
+  // find and return curriculum topic data corresponding to given id
+  CurriculumTopic.findOne({ id: id }, function(err, curriculumTopic) {
+    if(err) {
+      res.status(400).send({
+         message: errorHandler.getErrorMessage(err)
+      });
+    } else {
+      if(! curriculumTopic) {
+        res.status(404).send({
+           message: 'Currulum topic with specified id not found'
+        });
+      } else {
+        res.json(curriculumTopic);
+      }
     }
   });
 };
