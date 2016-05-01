@@ -10,12 +10,41 @@ var mongoose = require('mongoose'),
     hash = require('object-hash'),
     mongodb = require('mongodb').MongoClient,
     errorHandler = require('./errors.server.controller'),
-    CurriculumTopic = mongoose.model('CurriculumTopic');
+    CurriculumTopic = mongoose.model('CurriculumTopic'),
+    async = require('async');
 
 /* constants */
 var CURRICULUM_INFO_ENDPOINT = 'https://elastic1.asn.desire2learn.com/api/1/search',
     ASN_API_KEY = null,
     BQ_PREFIX = "?bq=(and+jurisdiction:'Ontario'+publication_status:'Published'+has_child:'false'+type:'Statement'";
+
+/*
+ * helper classes
+ */
+/* set of objects with unique ids */
+var IdSet = function() {
+    this.ids = new Set();   // set of ids
+    this.list = [];   // array of objects corresponding to ids
+
+    // adds item only if no existing object with identical id exists
+    this.add = function(item) {
+      if(! item || ! item.id) { throw 'Missing or illegal parameter'; }
+      if(! this.ids.has(item.id)) {
+        this.ids.add(item.id);
+        this.list.push(item);
+      }
+    };
+
+    // returns array of objects
+    this.toArray = function() {
+      return this.list;
+    };
+
+    // returns size of set
+    this.size = function() {
+      return this.list.length;
+    };
+};
 
 mongodb.connect('mongodb://localhost:27017/thinkdataapp-dev', { strict: true }, function(err, db) {
 	if(! err) {
@@ -55,54 +84,65 @@ exports.getCurriculumData = function(req, res) {
     if (! error && response.statusCode === 200) {
       var currRawData = JSON.parse(body).hits.hit,
           currRefinedData = {};
-      currRawData.forEach(function(element) {
-        var data = element.data,
-            description = data.description.slice(1),
-            title = data.description[0];
 
-        // create key-value for subject title if DNE
-        if(! currRefinedData[title]) {
-          currRefinedData[title] = [];
-        }
+      // modify requested data asynchronously and move forward only after
+      // have gone through each element
+      async.map(currRawData,
+        function(element, callback) {
+          var data = element.data,
+              description = data.description.slice(1),
+              title = data.description[0];
 
-        // only use descriptions specific to one grade
-        if(data.education_level.length === 1) {
-          description.forEach(function(desc) {
+          // create key-value for subject title if DNE
+          if(! currRefinedData[title]) {
+            currRefinedData[title] = new IdSet();
+          }
 
-            // only include unique descriptions for subject
-            var existingElements = currRefinedData[title].filter(function(e) {
-              return e.description === desc;
-            });
-            if(! existingElements.length) {
+          // only use descriptions specific to one grade
+          if(data.education_level.length === 1) {
+            // if exisiting curriculum topic, find its data
+            // else if new curriculum topic, save it
+            async.map(description, function(desc, cb) {
+              // calculate unique id for curriculum topic
               var id = hash({ grade: grade, subject: subject, title: title, description: desc });
-              CurriculumTopic.findOne({ id: id }, 'description difficulty', function(err, cTopic) {
+
+              // attempt to find curriculum topic with calculated id
+              CurriculumTopic.findOne({ id: id }, 'difficulty', function(err, cTopic) {
                 if(err) {
                   console.error('Problem with finding curriculum topic data: ' + errorHandler.getErrorMessage(err));
                 } else if(! cTopic) {
                   var newCurriTopic = new CurriculumTopic({ id: id, grade: grade, subject: subject, title: title, description: desc });
+
+                  // attempt to save new curriculum topic model in database
                   newCurriTopic.save(function(err) {
                     if(err) {
                       console.error('Error with saving curriculum topic data: ' + errorHandler.getErrorMessage(err));
                     } else {
-                      currRefinedData[title].push({ description: desc, rating: 0, id: id });
+                      currRefinedData[title].add({ description: desc, rating: 0, id: id });
+                      cb();
                     }
                   });
                 } else {
-                  currRefinedData[title].push({ description: desc, rating: cTopic.difficulty, id: id });
+                  currRefinedData[title].add({ description: desc, rating: cTopic.difficulty, id: id });
+                  cb();
                 }
               });
-            }
-          });
-        }
-      });
-
-      // remove all curriculum topics which have no description
-      for(var key in currRefinedData) {
-        if(! currRefinedData[key].length) {
-          delete currRefinedData[key];
-        }
-      }
-      res.send(currRefinedData);
+            }, function(err, results) {
+              callback();
+            });
+          }
+      }, function(err, results) {
+           // remove all curriculum topics which have no data and convert sets to arrays
+           for(var key in currRefinedData) {
+             if(! currRefinedData[key].size()) {
+               delete currRefinedData[key];
+             } else {
+               currRefinedData[key] = currRefinedData[key].toArray();
+             }
+           }
+           res.send(currRefinedData);
+         }
+      );
     }
   });
 };
