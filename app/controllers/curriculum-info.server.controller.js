@@ -177,7 +177,7 @@ exports.getGrades = function(req, res) {
 };
 
 exports.getSubjects = function(req, res) {
-  
+
   // subjects retrieval data
   var data = {
     key: ASN_API_KEY,
