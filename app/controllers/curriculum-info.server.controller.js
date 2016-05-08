@@ -47,6 +47,7 @@ var IdSet = function() {
     };
 };
 
+/* retrieve ASN API key from DB */
 mongodb.connect('mongodb://localhost:27017/thinkdataapp-dev', { strict: true }, function(err, db) {
 	if(! err) {
 		console.log('Successfully connected to thinkdataapp-dev DB');
@@ -130,11 +131,11 @@ exports.getCurriculumData = function(req, res) {
                   cb();
                 }
               });
-            }, function(err, results) {
+            }, function() {
               callback();
             });
           }
-      }, function(err, results) {
+      }, function() {
            // remove all curriculum topics which have no data and convert sets to arrays
            for(var key in currRefinedData) {
              if(! currRefinedData[key].size()) {
