@@ -1,3 +1,22 @@
 <section ng-init="getCurriculumTopicData()">
-	
+	<script type="text/ng-template" id="commentModal.html">
+		<div class="modal-body form-group">
+			<label>How easy did you find teaching this topic (0: extremely hard, 10: extremely easy)? </label>
+			<select class="form-control" ng-model="rating" required>
+				<option ng-repeat="r in RATINGS">{{ r }}</option>
+			</select>
+			<br>
+			<label>What areas were difficult to teach and why?</label>
+			<textarea class="form-control" ng-model="difficultAreas" required></textarea>
+			<br>
+			<label>What techniques did you implement to make it easier for students to learn the material?</label>
+			<textarea class="form-control" ng-model="techniques" required></textarea>
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-warning pull-left" type="button" ng-click="reset()">Reset</button>
+			<button class="btn btn-success" type="button" ng-click="add()">Add</button>
+			<button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+		</div>
+	</script>
+	<button type="button" class="btn btn-default" ng-click="addComment()">Add comment</button>
 </section>
