@@ -43,6 +43,6 @@ angular.module('curriculum-info').controller('CommentModalController', ['$scope'
 		/* clears all modal fields */
 		$scope.reset = function() {
 			$scope.rating = $scope.difficultAreas = $scope.techniques = '';
-		}
+		};
 	}
 ]);

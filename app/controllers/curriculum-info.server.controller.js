@@ -91,48 +91,41 @@ exports.getCurriculumData = function(req, res) {
       // have gone through each element
       async.map(currRawData,
         function(element, callback) {
-          var data = element.data,
-              description = data.description.slice(1),
-              title = data.description[0];
-
-          // create key-value for subject title if DNE
-          if(! currRefinedData[title]) {
-            currRefinedData[title] = new IdSet();
-          }
 
           // only use descriptions specific to one grade
-          if(data.education_level.length === 1) {
+          if(element.data.education_level.length === 1) {
+            var title = element.data.description[0],
+                description = element.data.description.pop();
+
+            // create key-value for subject title if DNE
+            if(! currRefinedData[title]) {
+              currRefinedData[title] = new IdSet();
+            }
+
+            // calculate unique id for curriculum topic
+            var id = hash({ grade: grade, subject: subject, title: title, description: description });
 
             // if exisiting curriculum topic, find its data
             // else if new curriculum topic, save it
-            async.map(description, function(desc, cb) {
+            CurriculumTopic.findOne({ id: id }, 'difficulty', function(err, cTopic) {
+              if(err) {
+                console.error('Problem with finding curriculum topic data: ' + errorHandler.getErrorMessage(err));
+              } else if(! cTopic) {
+                var newCurriTopic = new CurriculumTopic({ id: id, grade: grade, subject: subject, title: title, description: description });
 
-              // calculate unique id for curriculum topic
-              var id = hash({ grade: grade, subject: subject, title: title, description: desc });
-
-              // attempt to find curriculum topic with calculated id
-              CurriculumTopic.findOne({ id: id }, 'difficulty', function(err, cTopic) {
-                if(err) {
-                  console.error('Problem with finding curriculum topic data: ' + errorHandler.getErrorMessage(err));
-                } else if(! cTopic) {
-                  var newCurriTopic = new CurriculumTopic({ id: id, grade: grade, subject: subject, title: title, description: desc });
-
-                  // attempt to save new curriculum topic model in database
-                  newCurriTopic.save(function(err) {
-                    if(err) {
-                      console.error('Error with saving curriculum topic data: ' + errorHandler.getErrorMessage(err));
-                    } else {
-                      currRefinedData[title].add({ description: desc, rating: 0, id: id });
-                      cb();
-                    }
-                  });
-                } else {
-                  currRefinedData[title].add({ description: desc, rating: cTopic.difficulty, id: id });
-                  cb();
-                }
-              });
-            }, function() {
-              callback();
+                // attempt to save new curriculum topic model in database
+                newCurriTopic.save(function(err) {
+                  if(err) {
+                    console.error('Error with saving curriculum topic data: ' + errorHandler.getErrorMessage(err));
+                  } else {
+                    currRefinedData[title].add({ description: description, rating: 0, id: id });
+                    callback();
+                  }
+                });
+              } else {
+                currRefinedData[title].add({ description: description, rating: cTopic.difficulty, id: id });
+                callback();
+              }
             });
           }
       }, function() {
