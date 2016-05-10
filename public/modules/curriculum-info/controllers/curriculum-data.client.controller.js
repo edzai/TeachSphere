@@ -1,21 +1,30 @@
 'use strict';
 
-angular.module('curriculum-info').controller('CurriculumDataController', ['$scope', '$location', '$uibModal',
-	function($scope, $location, $uibModal) {
+angular.module('curriculum-info').controller('CurriculumDataController', ['$scope', '$location', '$uibModal', 'CurriculumCommentService',
+	function($scope, $location, $uibModal, CurriculumCommentService) {
 
 		/* TODO: get curriculum topic details and comments */
 		$scope.getCurriculumTopicData = function() {
-			var id = $location.search().id;
+			$scope.id = $location.search().id;
 		};
 
-		/* displays add comment modal */
+		/* displays add comment modal and saves comment */
 		$scope.addComment = function() {
 			$uibModal.open({
 				animation: $scope.animationsEnabled,
 				templateUrl: 'commentModal.html',
 				controller: 'CommentModalController'
-			}).result.then(function(response) {
-				// TODO: handle comment data
+			}).result.then(
+				function(response) {
+					response.id = $scope.id;
+					CurriculumCommentService
+					.save(response)
+					.$promise
+					.then(function(data) {
+						// TODO: handle comment UI
+					}, function(err) {
+						// TODO: handle comment error
+					});
 			});
 		};
 	}

@@ -23,3 +23,9 @@ angular.module('curriculum-info').factory('CurriculumTopicService', ['$resource'
 		return $resource('/curriculum/topic');
 	}
 ]);
+
+angular.module('curriculum-info').factory('CurriculumCommentService', ['$resource',
+	function($resource) {
+		return $resource('/curriculum/comment');
+	}
+]);

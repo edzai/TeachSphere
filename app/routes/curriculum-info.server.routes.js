@@ -7,4 +7,5 @@ module.exports = function(app) {
 	app.route('/grades').get(curriculumInfoController.getGrades);
 	app.route('/subjects').get(curriculumInfoController.getSubjects);
 	app.route('/curriculum/topic').get(curriculumInfoController.getCurriculumTopicData);
+	app.route('/curriculum/comment').post(curriculumInfoController.addComment);
 };

@@ -42,7 +42,28 @@ var CurriculumTopicSchema = new Schema({
 		type: Number,
 		default: 0
 	},
-	comments: [Comment]
+	comments: [{
+		rating: {
+			type: Number,
+			min: 0,
+			max: 10,
+			required: 'Must specifiy diffculty'
+		},
+		difficultAreas: {
+			type: String,
+			required: 'Must specify diffcult areas',
+			trim: true
+		},
+		techniques: {
+			type: String,
+			required: 'Must specify techniques',
+			trim: true
+		},
+		date: {
+			type: Date,
+			default: Date.now
+		}
+	}]
 });
 
 mongoose.model('CurriculumTopic', CurriculumTopicSchema);
