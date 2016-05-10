@@ -224,3 +224,38 @@ exports.getCurriculumTopicData = function(req, res) {
     }
   });
 };
+
+exports.addComment = function(req, res) {
+  var body = req.body;
+
+  // find curriculum topic which given id is
+  // for and save comment
+  CurriculumTopic.findOne(
+    { id: body.id },
+    function(err, doc) {
+      if(err) {
+        res.status(400).send({
+           message: errorHandler.getErrorMessage(err)
+        });
+      } else if(! doc) {
+        res.status(404).send({
+           message: 'Curriculum topic with specified id not found'
+        });
+      } else {
+        delete body.id;
+        doc.comments.push(body);
+
+        // attempt to save comment
+        doc.save(function(err) {
+          if(err) {
+            res.status(500).send({
+               message: errorHandler.getErrorMessage(err)
+            });
+          } else {
+            res.send({ message: 'Successfully saved' });
+          }
+        });
+      }
+    }
+  );
+};
