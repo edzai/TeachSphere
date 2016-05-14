@@ -161,11 +161,16 @@ exports.getGrades = function(req, res) {
   request(url, function (error, response, body) {
     if (! error && response.statusCode === 200) {
       var constraints = JSON.parse(body).facets.fct_education_level.constraints,
-          grades = [];
+          numGrades = [], strGrades = [];
+
+      // extract and sort grades
       constraints.forEach(function(element) {
-        grades.push(element.value);
+        var value = element.value;
+        isNaN(value) ? strGrades.push(value) : numGrades.push(parseInt(value));
       });
-      res.send(grades);
+      strGrades.sort();
+      numGrades.sort(function(first, second) { return first - second; });
+      res.send(strGrades.concat(numGrades));
     }
   });
 };
