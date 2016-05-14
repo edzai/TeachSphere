@@ -18,5 +18,14 @@
 			<button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
 		</div>
 	</script>
-	<button type="button" class="btn btn-default" ng-click="addComment()">Add comment</button>
+	<button type="button" class="btn btn-default" ng-click="addComment()">Add comment</button><br>
+	<br>
+	<ul class="list-group">
+  	<li class="list-group-item" ng-repeat="comment in comments">
+			<span><b>Rating: </b>{{ comment.rating }}</span><br>
+			<span><b>Difficult Areas: </b>{{ comment.difficultAreas }}</span><br>
+			<span><b>Techniques: </b>{{ comment.techniques }}</span><br>
+			<span><b>Date: </b>{{ comment.date }}</span>
+		</li>
+	</ul>
 </section>

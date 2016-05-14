@@ -45,7 +45,7 @@ var CurriculumTopicSchema = new Schema({
 			type: Number,
 			min: 0,
 			max: 10,
-			required: 'Must specifiy diffculty'
+			required: 'Must specify diffculty'
 		},
 		difficultAreas: {
 			type: String,
@@ -58,8 +58,8 @@ var CurriculumTopicSchema = new Schema({
 			trim: true
 		},
 		date: {
-			type: Date,
-			default: Date.now
+			type: String,
+			required: 'Must specify date'
 		}
 	}]
 });

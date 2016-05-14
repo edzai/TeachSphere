@@ -1,11 +1,17 @@
 'use strict';
 
-angular.module('curriculum-info').controller('CurriculumDataController', ['$scope', '$location', '$uibModal', 'CurriculumCommentService',
-	function($scope, $location, $uibModal, CurriculumCommentService) {
+angular.module('curriculum-info').controller('CurriculumDataController', ['$scope', '$location', '$uibModal', 'CurriculumCommentService', 'CurriculumTopicService',
+	function($scope, $location, $uibModal, CurriculumCommentService, CurriculumTopicService) {
 
-		/* TODO: get curriculum topic details and comments */
+		/* get curriculum topic details and comments */
 		$scope.getCurriculumTopicData = function() {
 			$scope.id = $location.search().id;
+			CurriculumTopicService
+			.get({ id: $scope.id })
+			.$promise
+			.then(function(data) {
+				$scope.comments = data.comments;
+			 });
 		};
 
 		/* displays add comment modal and saves comment */
@@ -21,7 +27,8 @@ angular.module('curriculum-info').controller('CurriculumDataController', ['$scop
 					.save(response)
 					.$promise
 					.then(function(data) {
-						// TODO: handle comment UI
+						// render new comment to UI
+						$scope.comments.push(response);
 					}, function(err) {
 						// TODO: handle comment error
 					});
@@ -41,7 +48,7 @@ angular.module('curriculum-info').controller('CommentModalController', ['$scope'
 			$uibModalInstance.close({ rating: $scope.rating,
 																difficultAreas: $scope.difficultAreas,
 																techniques: $scope.techniques,
-																date: new Date() });
+																date: new Date().toLocaleString() });
 		};
 
 		/* closes modal */
