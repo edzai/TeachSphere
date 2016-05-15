@@ -1,0 +1,28 @@
+#main-section {
+  margin-top: 8%;
+  border: 10px solid black;
+  border-radius: 50px;
+  background-color: white
+}
+
+#header-container {
+  text-align:center
+}
+
+#header {
+  font-family: "Lucida Console", Monaco, monospace;
+  color: black
+}
+
+.dropdown {
+  border: 2px solid black
+}
+
+#go-btn {
+  color: white;
+  background-color: black
+}
+
+#go-btn-container {
+  text-align: center
+}

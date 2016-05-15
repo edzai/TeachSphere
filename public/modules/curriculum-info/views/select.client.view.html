@@ -1,15 +1,21 @@
-<section>
-  <form ng-submit="formSubmit()" ng-init="init()" class="form-group">
+<section id="main-section" class="form-group col-md-8 col-md-offset-2">
+  <br>
+  <div id="header-container">
+    <h1 id="header">TeachSphere</h1>
+  </div>
+  <form ng-submit="formSubmit()" ng-init="init()" class="form-group col-md-10 col-md-offset-1">
     <label>Grade: </label>
-    <select name="grade" ng-model="grade" ng-change="gradeSelected()" class="form-control" ng-disabled="shouldDisableGrades">
+    <select class="form-control dropdown" name="grade" ng-model="grade" ng-change="gradeSelected()" ng-disabled="shouldDisableGrades">
       <option ng-repeat="grade in grades" value="{{ grade }}">{{ grade }}</option>
     </select>
     <br>
     <label>Subject: </label>
-    <select name="subject" ng-model="subject" class="form-control" ng-disabled="shouldDisableSubjects" ng-change="subjectSelected()">
+    <select class="form-control dropdown" name="subject" ng-model="subject" ng-disabled="shouldDisableSubjects" ng-change="subjectSelected()">
       <option ng-repeat="subject in subjects" value="{{ subject }}">{{ subject }}</option>
     </select>
-    <br>
-    <input type="submit" class="btn btn-info pull-right" value="Submit" ng-disabled="shouldDisableSubmit" />
+    <br><br>
+    <div id="go-btn-container">
+      <input id="go-btn" type="submit" class="btn btn-lg" value="Go!" ng-disabled="shouldDisableSubmit" />
+    </div><br>
   </form>
 </section>

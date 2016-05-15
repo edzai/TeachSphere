@@ -3,7 +3,7 @@
 module.exports = {
 	db: 'mongodb://localhost/thinkdataapp-dev',
 	app: {
-		title: 'ThinkDataApp - Development Environment'
+		title: 'TeachSphere'
 	},
 	facebook: {
 		clientID: process.env.FACEBOOK_ID || 'APP_ID',
