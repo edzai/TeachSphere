@@ -2,15 +2,15 @@
 	<script type="text/ng-template" id="commentModal.html">
 		<div class="modal-body form-group">
 			<label>How easy did you find teaching this topic (0: extremely hard, 10: extremely easy)? </label>
-			<select class="form-control" ng-model="rating" required>
+			<select class="form-control" ng-model="rating" ng-style="ratingStyling">
 				<option ng-repeat="r in RATINGS">{{ r }}</option>
 			</select>
 			<br>
 			<label>What areas were difficult to teach and why?</label>
-			<textarea class="form-control" ng-model="difficultAreas" required></textarea>
+			<textarea class="form-control" ng-model="difficultAreas" ng-style="difficultAreasStyling"></textarea>
 			<br>
 			<label>What techniques did you implement to make it easier for students to learn the material?</label>
-			<textarea class="form-control" ng-model="techniques" required></textarea>
+			<textarea class="form-control" ng-model="techniques" ng-style="techniquesStyling"></textarea>
 		</div>
 		<div class="modal-footer">
 			<button class="btn btn-warning pull-left" type="button" ng-click="reset()">Reset</button>

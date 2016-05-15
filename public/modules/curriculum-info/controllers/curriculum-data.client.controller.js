@@ -43,12 +43,31 @@ angular.module('curriculum-info').controller('CommentModalController', ['$scope'
 		/* constants */
 		$scope.RATINGS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+		$scope.ratingStyling = $scope.difficultAreasStyling = $scope.techniquesStyling = { border: '1px solid gray' };
+
 		/* returns modal data */
 		$scope.add = function() {
-			$uibModalInstance.close({ rating: $scope.rating,
-																difficultAreas: $scope.difficultAreas,
-																techniques: $scope.techniques,
-																date: new Date().toLocaleString() });
+
+			// all fields of comment modal must be filled
+			var allFieldsFilled = true;
+			if(! $scope.rating) {
+				$scope.ratingStyling = { border: '1px solid red' };
+				allFieldsFilled = false;
+			}
+			if(! $scope.difficultAreas) {
+				$scope.difficultAreasStyling = { border: '1px solid red' };
+				allFieldsFilled = false;
+			}
+			if(! $scope.techniques) {
+				$scope.techniquesStyling = { border: '1px solid red' };
+				allFieldsFilled = false;
+			}
+			if(allFieldsFilled) {
+				$uibModalInstance.close({ rating: $scope.rating,
+																	difficultAreas: $scope.difficultAreas,
+																	techniques: $scope.techniques,
+																	date: new Date().toLocaleString() });
+			}
 		};
 
 		/* closes modal */
