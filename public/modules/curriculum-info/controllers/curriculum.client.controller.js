@@ -2,12 +2,25 @@
 
 angular.module('curriculum-info').controller('CurriculumController', ['$scope', '$location', '$sce', '$anchorScroll', 'CurriculumService',
 	function($scope, $location, $sce, $anchorScroll, CurriculumService) {
-		$scope.grade = $location.search().grade, $scope.subject = $location.search().subject;
-		$scope.curriculumData = CurriculumService.get({ grade: $scope.grade, subject: $scope.subject  });
+
+		/* get curriculum data */
+		$scope.init = function() {
+			$scope.hideContents = true;
+			$scope.grade = $location.search().grade;
+			$scope.subject = $location.search().subject;
+			CurriculumService
+				.get({ grade: $scope.grade, subject: $scope.subject  })
+				.$promise
+				.then(function(data) {
+					$scope.curriculumData = data;
+					$scope.hideContents = false;
+				});
+		};
+
 		var gradeAndSubjectHtml = '<b>Grade: </b>' +	$scope.grade + '<br>' +
 															'<b>Subject: </b>' + $scope.subject  + '<br>';
 
-		// displays popover for element mouse is currently in
+		/* displays popover for element mouse is currently in */
 		$scope.showElementData = function(title, rating) {
 			var sectionHtml = '<b id="section">Section: </b>' +	title + '<br>';
 
@@ -26,12 +39,13 @@ angular.module('curriculum-info').controller('CurriculumController', ['$scope', 
 			$scope.popoverHtml = $sce.trustAsHtml(popoverHtml);
 		};
 
-		// navigates to appropriate header based on user click
+		/* navigates to appropriate header based on user click */
 		$scope.navigateTo = function(id) {
 			$location.hash(id);
 			$anchorScroll();
 		};
 
+		/* go to curriculum data page */
 		$scope.viewMore = function(id) {
 			$location.path('/curriculum/data').search({ id: id });
 		};
