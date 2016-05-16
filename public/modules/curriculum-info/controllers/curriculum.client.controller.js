@@ -17,12 +17,8 @@ angular.module('curriculum-info').controller('CurriculumController', ['$scope', 
 				});
 		};
 
-		var gradeAndSubjectHtml = '<b>Grade: </b>' +	$scope.grade + '<br>' +
-															'<b>Subject: </b>' + $scope.subject  + '<br>';
-
 		/* displays popover for element mouse is currently in */
 		$scope.showElementData = function(title, rating) {
-			var sectionHtml = '<b id="section">Section: </b>' +	title + '<br>';
 
 			// build HTML for easiness bar
 			var easinessBarHtml = '<div id="easiness-bar-container" class="container-fluid"> \
@@ -35,8 +31,7 @@ angular.module('curriculum-info').controller('CurriculumController', ['$scope', 
 														 		</div> \
 															</div> \
 														</div>';
-			var popoverHtml = gradeAndSubjectHtml + sectionHtml + easinessBarHtml;
-			$scope.popoverHtml = $sce.trustAsHtml(popoverHtml);
+			$scope.popoverHtml = $sce.trustAsHtml(easinessBarHtml);
 		};
 
 		/* navigates to appropriate header based on user click */
