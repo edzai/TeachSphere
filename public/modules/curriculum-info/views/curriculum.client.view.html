@@ -1,20 +1,30 @@
 <section>
-  <a ng-repeat="(title, data) in curriculumData" ng-click="navigateTo(title)">
-		{{ title }}<br>
-	</a>
-	<div ng-repeat="(title, data) in curriculumData">
-		<h3 id="{{ title }}">{{ title }}</h3>
-		<ul ng-repeat="d in data">
-			<li>
-					<a class="curriculum-bullet"
+  <div class="col-md-6 col-md-offset-3" style="text-align: center">
+    <div class="panel panel-info">
+      <div class="panel-heading">Grade {{ grade }} {{ subject }}</div>
+      <div class="panel-body">
+        <a ng-repeat="(title, data) in curriculumData" ng-click="navigateTo(title)" style="color: black">
+          {{ title }}<br>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="clearfix"></div>
+  <div class="panel-group" ng-repeat="(title, data) in curriculumData">
+    <div class="panel panel-primary">
+      <div class="panel-heading" id="{{ title }}">{{ title }}</div>
+      <div class="panel-body">
+        <ul ng-repeat="d in data">
+          <a href="" class="curriculum-bullet"
              ng-mouseenter="showElementData(title, d.rating)"
-    				 popover-placement="auto top-left"
-    				 popover-trigger="mouseenter"
-    				 uib-popover-html="popoverHtml"
+             popover-placement="auto top-left"
+             popover-trigger="mouseenter"
+             uib-popover-html="popoverHtml"
              ng-click="viewMore(d.id)">
-              {{ d.description }}
+             <li>{{ d.description }}</li>
           </a>
-			</li>
-		</ul>
-	</div>
+        </ul>
+      </div>
+    </div>
+  </div>
 </section>

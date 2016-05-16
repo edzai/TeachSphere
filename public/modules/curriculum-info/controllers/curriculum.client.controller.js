@@ -2,12 +2,10 @@
 
 angular.module('curriculum-info').controller('CurriculumController', ['$scope', '$location', '$sce', '$anchorScroll', 'CurriculumService',
 	function($scope, $location, $sce, $anchorScroll, CurriculumService) {
-		var queryParams = $location.search(),
-				grade = queryParams.grade,
-				subject = queryParams.subject;
-		$scope.curriculumData = CurriculumService.get({ grade: grade, subject: subject });
-		var gradeAndSubjectHtml = '<b>Grade: </b>' +	grade + '<br>' +
-															'<b>Subject: </b>' + subject + '<br>';
+		$scope.grade = $location.search().grade, $scope.subject = $location.search().subject;
+		$scope.curriculumData = CurriculumService.get({ grade: $scope.grade, subject: $scope.subject  });
+		var gradeAndSubjectHtml = '<b>Grade: </b>' +	$scope.grade + '<br>' +
+															'<b>Subject: </b>' + $scope.subject  + '<br>';
 
 		// displays popover for element mouse is currently in
 		$scope.showElementData = function(title, rating) {
