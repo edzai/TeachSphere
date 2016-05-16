@@ -72,7 +72,7 @@ exports.getCurriculumData = function(req, res) {
   // curriculum info retrieval data
   var data = {
     key: ASN_API_KEY,
-    size: 1000,
+    size: 100000,
     rank: 'description',
     'return-fields': 'description,education_level'
   };
