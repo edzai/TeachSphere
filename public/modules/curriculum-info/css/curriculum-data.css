@@ -1,0 +1,14 @@
+#main-container {
+  background-color: #fafafa;
+  border-radius: 20px;
+  padding: 50px;
+  border: 2px solid black;
+}
+
+#comments-header {
+  margin-left: 5px;
+}
+
+.page-header {
+  margin-top: -8px;
+}

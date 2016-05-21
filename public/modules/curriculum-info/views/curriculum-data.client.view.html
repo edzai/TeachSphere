@@ -18,14 +18,24 @@
 			<button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
 		</div>
 	</script>
-	<button type="button" class="btn btn-default" ng-click="addComment()">Add comment</button><br>
-	<br>
-	<ul class="list-group">
-  	<li class="list-group-item" ng-repeat="comment in comments">
-			<span><b>Rating: </b>{{ comment.rating }}</span><br>
-			<span><b>Difficult Areas: </b>{{ comment.difficultAreas }}</span><br>
-			<span><b>Techniques: </b>{{ comment.techniques }}</span><br>
-			<span><b>Date: </b>{{ comment.date }}</span>
-		</li>
-	</ul>
+	<div id="main-container">
+		<div class="page-header">
+			<span><b>Grade: </b>{{ data.grade }}</span><br>
+			<span><b>Subject: </b>{{ data.subject }}</span><br>
+			<span><b>Topic: </b>{{ data.description }}</span><br>
+			<span><b>Rating: </b>{{ data.difficulty }}%</span><br>
+			<span><b>Total Ratings: </b>{{ data.totalRankings }}</span>
+			<button type="button" class="btn btn-default pull-right" ng-click="addComment()">Add comment</button>
+			<div class="clearfix"></div>
+		</div>
+		<h4 id="comments-header">Comments</h4>
+		<ul class="list-group">
+	  	<li class="list-group-item" ng-repeat="comment in data.comments">
+				<span><b>Rating: </b>{{ comment.rating }}</span><br>
+				<span><b>Difficult Areas: </b>{{ comment.difficultAreas }}</span><br>
+				<span><b>Techniques: </b>{{ comment.techniques }}</span><br>
+				<span><b>Date: </b>{{ comment.date }}</span>
+			</li>
+		</ul>
+	</div>
 </section>

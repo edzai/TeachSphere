@@ -12,8 +12,9 @@
 
 #easiness-bar-container {
 	margin-bottom: -15px;
+	width: 200px;
 }
 
-#easiness-bar-label {
-	margin-left: -15px
+#label {
+	margin-left: -15px;
 }

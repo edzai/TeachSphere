@@ -1,9 +1,9 @@
 <section ng-init="init()">
-  <div class="col-md-6 col-md-offset-3" style="text-align: center" ng-hide="hideContents">
+  <div id="table-of-contents" class="col-md-6 col-md-offset-3" ng-hide="hideContents">
     <div class="panel panel-info">
       <div class="panel-heading">Grade {{ grade }} {{ subject }}</div>
       <div class="panel-body">
-        <a ng-repeat="(title, data) in curriculumData" ng-click="navigateTo(title)" style="color: black">
+        <a ng-repeat="(title, data) in curriculumData" ng-click="navigateTo(title)">
           {{ title }}<br>
         </a>
       </div>
@@ -16,7 +16,7 @@
       <div class="panel-body">
         <ul ng-repeat="d in data">
           <a href="" class="curriculum-bullet"
-             ng-mouseenter="showElementData(title, d.rating)"
+             ng-mouseenter="showElementData(title, d.rating, d.totalRankings)"
              popover-placement="auto top-left"
              popover-trigger="mouseenter"
              uib-popover-html="popoverHtml"

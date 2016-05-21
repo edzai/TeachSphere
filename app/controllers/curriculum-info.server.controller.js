@@ -107,7 +107,7 @@ exports.getCurriculumData = function(req, res) {
 
             // if exisiting curriculum topic, find its data
             // else if new curriculum topic, save it
-            CurriculumTopic.findOne({ id: id }, 'difficulty', function(err, cTopic) {
+            CurriculumTopic.findOne({ id: id }, 'difficulty totalRankings', function(err, cTopic) {
               if(err) {
                 console.error('Problem with finding curriculum topic data: ' + errorHandler.getErrorMessage(err));
               } else if(! cTopic) {
@@ -118,12 +118,12 @@ exports.getCurriculumData = function(req, res) {
                   if(err) {
                     console.error('Error with saving curriculum topic data: ' + errorHandler.getErrorMessage(err));
                   } else {
-                    currRefinedData[title].add({ description: description, rating: 0, id: id });
+                    currRefinedData[title].add({ description: description, rating: 0, id: id, totalRankings: 0 });
                     callback();
                   }
                 });
               } else {
-                currRefinedData[title].add({ description: description, rating: cTopic.difficulty, id: id });
+                currRefinedData[title].add({ description: description, rating: cTopic.difficulty, id: id, totalRankings: cTopic.totalRankings });
                 callback();
               }
             });

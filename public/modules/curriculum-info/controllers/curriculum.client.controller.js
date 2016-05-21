@@ -18,15 +18,18 @@ angular.module('curriculum-info').controller('CurriculumController', ['$scope', 
 		};
 
 		/* displays popover for element mouse is currently in */
-		$scope.showElementData = function(title, rating) {
+		$scope.showElementData = function(title, rating, totalRankings) {
 
 			// build HTML for easiness bar
 			var easinessBarHtml = '<div id="easiness-bar-container" class="container-fluid"> \
 															<div class="row"> \
-																<b id="easiness-bar-label" class="col-sm-1">Easy: </b> \
+																<b id="col-sm-1 label">Comments: </b>' + totalRankings + '\
+															</div> \
+															<div class="row"> \
+																<b id="label" class="col-sm-1">Easy: </b> \
 																<div id="progress-div" class="progress"> \
-																	<div class="progress-bar progress-bar-success" style="width:' + rating + '%">' +
-    																rating + '% \
+																	<div class="progress-bar progress-bar-primary" style="width:' + rating + '%">' +
+    																parseFloat(rating).toFixed(0) + '% \
   																</div> \
 														 		</div> \
 															</div> \

@@ -10,7 +10,7 @@ angular.module('curriculum-info').controller('CurriculumDataController', ['$scop
 			.get({ id: $scope.id })
 			.$promise
 			.then(function(data) {
-				$scope.comments = data.comments;
+				$scope.data = data;
 			 });
 		};
 
@@ -27,10 +27,10 @@ angular.module('curriculum-info').controller('CurriculumDataController', ['$scop
 					.save(response)
 					.$promise
 					.then(function(data) {
-						// render new comment to UI
-						$scope.comments.push(response);
+						// retrieve updated curriculum data
+						$scope.getCurriculumTopicData();
 					}, function(err) {
-						// TODO: handle comment error
+						console.error('Unable to save comment: ' + err);
 					});
 			});
 		};

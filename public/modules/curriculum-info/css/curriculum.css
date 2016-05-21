@@ -7,3 +7,11 @@
 .curriculum-bullet {
   color: black;
 }
+
+#table-of-contents {
+  text-align: center;
+}
+
+#table-of-contents a {
+  color: black;
+}
