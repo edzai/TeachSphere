@@ -33,7 +33,7 @@ var CurriculumTopicSchema = new Schema({
 	difficulty: {
 		type: Number,
 		min: 0,
-		max: 10,
+		max: 100,
 		default: 0
 	},
 	totalRankings: {
