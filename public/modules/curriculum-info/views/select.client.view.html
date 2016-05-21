@@ -15,7 +15,7 @@
     </select>
     <br><br>
     <div id="go-btn-container">
-      <input id="go-btn" type="submit" class="btn btn-lg" value="Go!" ng-disabled="shouldDisableSubmit" />
+      <input id="go-btn" type="submit" class="btn btn-lg" value="Go!" ng-disabled="shouldDisableSubmit" ng-style="goButtonStyle" ng-mouseover="goButtonMouseOver()" ng-mouseleave="goButtonMouseLeave()" />
     </div><br>
   </form>
 </section>

@@ -3,6 +3,8 @@
 angular.module('curriculum-info').controller('SelectController', ['$scope', '$location', 'CurriculumService', 'GradesService', 'SubjectsService',
 	function($scope, $location, CurriculumService, GradesService, SubjectsService) {
 
+		$scope.goButtonStyle = { color: 'white', 'background-color': 'black', border: '2px solid black' };
+
 		$scope.init = function() {
 
 			// disable all elements initially
@@ -39,6 +41,16 @@ angular.module('curriculum-info').controller('SelectController', ['$scope', '$lo
 		/* handles submission of form */
 		$scope.formSubmit = function() {
 			$location.path('/curriculum').search({ grade: $scope.grade, subject: $scope.subject });
+		};
+
+		/* change go button style when mouse enters it */
+		$scope.goButtonMouseOver = function() {
+			$scope.goButtonStyle = { color: 'black', 'background-color': 'white', border: '2px solid black' };
+		};
+
+		/* change go button style when mouse leaves it */
+		$scope.goButtonMouseLeave = function() {
+			$scope.goButtonStyle = { color: 'white', 'background-color': 'black', border: '2px solid black' };
 		};
 	}
 ]);
