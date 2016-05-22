@@ -15,7 +15,7 @@ angular.module('curriculum-info').config(['$stateProvider',
 			templateUrl: 'modules/curriculum-info/views/curriculum.client.view.html'
 		}).
 		state('select', {
-			url: '/select',
+			url: '/',
 			controller: 'SelectController',
 			templateUrl: 'modules/curriculum-info/views/select.client.view.html'
 		});
