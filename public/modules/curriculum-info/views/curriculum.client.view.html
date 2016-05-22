@@ -13,7 +13,7 @@
   <div class="panel-group" ng-repeat="(title, data) in curriculumData">
     <div class="panel panel-primary">
       <div class="panel-heading" id="{{ title }}">{{ title }}</div>
-      <div class="panel-body">
+      <div class="panel-body subject-panel">
         <ul ng-repeat="d in data">
           <a href="" class="curriculum-bullet"
              ng-mouseenter="showElementData(title, d.rating, d.totalRankings)"

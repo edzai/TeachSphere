@@ -2,13 +2,43 @@
   background-color: #fafafa;
   border-radius: 20px;
   padding: 50px;
-  border: 2px solid black;
+  border: 5px solid black;
 }
 
 #comments-header {
+  display: inline;
   margin-left: 5px;
 }
 
 .page-header {
-  margin-top: -8px;
+  margin-top: -17px;
+}
+
+.btn {
+  background-color: gray;
+  color: white;
+  border-radius: 0px;
+}
+
+.btn:hover {
+  background-color: black;
+  color: white;
+}
+
+.modal-content {
+  border-radius: 0px;
+  background-color: #fafafa;
+}
+
+#add-comment-button {
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
+#no-comments-msg {
+  color: red;
+}
+
+.txt-area-txt {
+  word-wrap: break-word;
 }

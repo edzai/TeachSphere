@@ -10,6 +10,7 @@ angular.module('curriculum-info').controller('CurriculumDataController', ['$scop
 			.get({ id: $scope.id })
 			.$promise
 			.then(function(data) {
+				data.difficulty = parseFloat(data.difficulty).toFixed(0);
 				$scope.data = data;
 			 });
 		};

@@ -9,33 +9,40 @@
 			<label>What areas were difficult to teach and why?</label>
 			<textarea class="form-control" ng-model="difficultAreas" ng-style="difficultAreasStyling"></textarea>
 			<br>
-			<label>What techniques did you implement to make it easier for students to learn the material?</label>
+			<label>What techniques did you implement to make it easier for students to learn this material?</label>
 			<textarea class="form-control" ng-model="techniques" ng-style="techniquesStyling"></textarea>
 		</div>
 		<div class="modal-footer">
-			<button class="btn btn-warning pull-left" type="button" ng-click="reset()">Reset</button>
-			<button class="btn btn-success" type="button" ng-click="add()">Add</button>
-			<button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+			<button class="btn pull-left" type="button" ng-click="reset()">Reset</button>
+			<button class="btn" type="button" ng-click="add()">Add</button>
+			<button class="btn" type="button" ng-click="cancel()">Cancel</button>
 		</div>
 	</script>
 	<div id="main-container">
-		<div class="page-header">
-			<span><b>Grade: </b>{{ data.grade }}</span><br>
-			<span><b>Subject: </b>{{ data.subject }}</span><br>
-			<span><b>Topic: </b>{{ data.description }}</span><br>
-			<span><b>Rating: </b>{{ data.difficulty }}%</span><br>
-			<span><b>Total Ratings: </b>{{ data.totalRankings }}</span>
-			<button type="button" class="btn btn-default pull-right" ng-click="addComment()">Add comment</button>
-			<div class="clearfix"></div>
+		<div class="row">
+			<div class="page-header">
+				<span><b>Grade: </b>{{ data.grade }}</span><br>
+				<span><b>Subject: </b>{{ data.subject }}</span><br>
+				<span><b>Topic: </b>{{ data.description }}</span><br>
+				<span><b>Rating: </b>{{ data.difficulty }}%</span><br>
+				<span><b>Total Ratings: </b>{{ data.totalRankings }}</span>
+				<div class="clearfix"></div>
+			</div>
 		</div>
-		<h4 id="comments-header">Comments</h4>
-		<ul class="list-group">
-	  	<li class="list-group-item" ng-repeat="comment in data.comments">
-				<span><b>Rating: </b>{{ comment.rating }}</span><br>
-				<span><b>Difficult Areas: </b>{{ comment.difficultAreas }}</span><br>
-				<span><b>Techniques: </b>{{ comment.techniques }}</span><br>
-				<span><b>Date: </b>{{ comment.date }}</span>
-			</li>
-		</ul>
+		<div class="row">
+			<h4 id="comments-header">Comments</h4>
+			<button id="add-comment-button" type="button" class="btn pull-right" ng-click="addComment()">Add comment</button>
+		</div>
+		<div class="row">
+			<ul class="list-group" ng-if="data.comments.length">
+		  	<li class="list-group-item" ng-repeat="comment in data.comments">
+					<span><b>Rating: </b>{{ comment.rating }}</span>
+					<small class="pull-right">{{ comment.date }}</small><br>
+					<span class="txt-area-txt"><b>Difficult Areas: </b>{{ comment.difficultAreas }}</span><br>
+					<span class="txt-area-txt"><b>Techniques: </b>{{ comment.techniques }}</span><br>
+				</li>
+			</ul>
+			<p id="no-comments-msg" ng-if="! data.comments.length">there are no comments available at this time</p>
+		</div>
 	</div>
 </section>

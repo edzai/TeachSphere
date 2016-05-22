@@ -2,22 +2,26 @@
   margin-top: 8%;
   border: 10px solid black;
   border-radius: 50px;
-  background-color: white
+  background-color: #fafafa;
 }
 
 #header-container {
-  text-align:center
+  text-align:center;
 }
 
 #header {
   font-family: "Lucida Console", Monaco, monospace;
-  color: black
+  color: black;
 }
 
 .dropdown {
-  border: 2px solid black
+  border: 2px solid black;
 }
 
 #go-btn-container {
-  text-align: center
+  text-align: center;
+}
+
+#go-btn {
+  border-radius: 4px;
 }
