@@ -251,7 +251,7 @@ exports.addComment = function(req, res) {
         doc.comments.push(body);
 
         // adjust total rankings and average difficulty of teaching topic based on new comment
-        doc.difficulty = (doc.totalRankings*doc.difficulty + body.rating*10)/(doc.totalRankings + 1);
+        doc.difficulty = (doc.totalRankings*doc.difficulty + body.rating)/(doc.totalRankings + 1);
         doc.totalRankings++;
 
         // attempt to save comment

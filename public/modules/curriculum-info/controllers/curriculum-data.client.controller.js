@@ -64,7 +64,7 @@ angular.module('curriculum-info').controller('CommentModalController', ['$scope'
 				allFieldsFilled = false;
 			}
 			if(allFieldsFilled) {
-				$uibModalInstance.close({ rating: $scope.rating,
+				$uibModalInstance.close({ rating: $scope.rating * 10,
 																	difficultAreas: $scope.difficultAreas,
 																	techniques: $scope.techniques,
 																	date: new Date().toLocaleString() });

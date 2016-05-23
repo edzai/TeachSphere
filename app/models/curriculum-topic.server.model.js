@@ -44,7 +44,7 @@ var CurriculumTopicSchema = new Schema({
 		rating: {
 			type: Number,
 			min: 0,
-			max: 10,
+			max: 100,
 			required: 'Must specify diffculty'
 		},
 		difficultAreas: {
