@@ -24,8 +24,8 @@
 				<span><b>Grade: </b>{{ data.grade }}</span><br>
 				<span><b>Subject: </b>{{ data.subject }}</span><br>
 				<span><b>Topic: </b>{{ data.description }}</span><br>
-				<span><b>Rating: </b>{{ data.difficulty }}%</span><br>
-				<span><b>Total Ratings: </b>{{ data.totalRankings }}</span>
+				<span><b>Ease of teaching: </b>{{ data.difficulty }}%</span><br>
+				<span><b>Total ratings: </b>{{ data.totalRankings }}</span>
 				<div class="clearfix"></div>
 			</div>
 		</div>
@@ -36,9 +36,9 @@
 		<div class="row">
 			<ul class="list-group" ng-if="data.comments.length">
 		  	<li class="list-group-item" ng-repeat="comment in data.comments">
-					<span><b>Rating: </b>{{ comment.rating }}</span>
+					<span><b>Ease of teaching: </b>{{ comment.rating }}%</span>
 					<small class="pull-right">{{ comment.date }}</small><br>
-					<span class="txt-area-txt"><b>Difficult Areas: </b>{{ comment.difficultAreas }}</span><br>
+					<span class="txt-area-txt"><b>Difficult areas: </b>{{ comment.difficultAreas }}</span><br>
 					<span class="txt-area-txt"><b>Techniques: </b>{{ comment.techniques }}</span><br>
 				</li>
 			</ul>
